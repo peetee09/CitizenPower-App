@@ -1,0 +1,28 @@
+lib/
+├── main.dart                  # App entry point
+├── models/                    # Data models
+│   ├── report.dart
+│   ├── user.dart
+│   └── department.dart
+├── services/                  # Business logic
+│   ├── auth_service.dart
+│   ├── report_service.dart
+│   ├── location_service.dart
+│   └── offline_service.dart
+├── utils/                     # Utilities
+│   ├── constants.dart
+│   ├── helpers.dart
+│   └── notification.dart
+├── widgets/                   # Reusable widgets
+│   ├── category_selector.dart
+│   ├── emergency_toggle.dart
+│   ├── report_card.dart
+│   └── status_indicator.dart
+└── screens/                   # App screens
+    ├── home_screen.dart
+    ├── report_screen.dart
+    ├── location_screen.dart
+    ├── confirmation_screen.dart
+    ├── dashboard_screen.dart
+    ├── escalation_screen.dart
+    └── settings_screen.dart

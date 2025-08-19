@@ -1,0 +1,11 @@
+# Generate adaptive icons
+flutter pub run flutter_launcher_icons:main
+
+# Build for production
+flutter build apk --release
+flutter build appbundle
+flutter build ios --release
+
+# Run tests
+flutter test
+flutter drive --target=test_driver/app.dart
