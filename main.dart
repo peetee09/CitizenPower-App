@@ -16,19 +16,20 @@ void main() async {
   if (kIsWeb) {
     await Firebase.initializeApp(
       options: const FirebaseOptions(
-        apiKey: "YOUR_API_KEY",
-        authDomain: "YOUR_PROJECT.firebaseapp.com",
-        projectId: "YOUR_PROJECT_ID",
-        storageBucket: "YOUR_PROJECT.appspot.com",
-        messagingSenderId: "YOUR_SENDER_ID",
-        appId: "YOUR_APP_ID",
+        apiKey: "AIzaSyA7ULBfHKEW93SXyr8CHeA63WFPHqyspvw",
+        authDomain: "citizenpower-6b647.firebaseapp.com",
+        projectId: "citizenpower-6b647",
+        storageBucket: "citizenpower-6b647.firebasestorage.app",
+        messagingSenderId: "50474846301",
+        appId: "1:50474846301:web:4942dde8c9a32ddc77e5b4",
+        measurementId: "G-4ZFYKY7291",
       ),
     );
   } else {
     await Firebase.initializeApp();
   }
   
-  // Hive initialization (skip for web or use alternative)
+  // Hive initialization (skip for web)
   if (!kIsWeb) {
     await Hive.initFlutter();
     await Hive.openBox('offlineReports');
