@@ -1,5 +1,6 @@
 import 'package:hive/hive.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 part 'report.g.dart';
 
@@ -16,7 +17,7 @@ class Report {
   @HiveField(4)
   final List<String> mediaUrls;
   @HiveField(5)
-  final Position location;
+  final dynamic location; // Changed from Position to dynamic for web compatibility
   @HiveField(6)
   final DateTime timestamp;
   @HiveField(7)
@@ -47,4 +48,21 @@ class Report {
     this.assignedDepartment,
     this.resolutionDate,
   });
+
+  // Helper methods for location handling
+  double get latitude {
+    if (kIsWeb) {
+      return location['latitude'] ?? 0.0;
+    } else {
+      return (location as Position).latitude;
+    }
+  }
+
+  double get longitude {
+    if (kIsWeb) {
+      return location['longitude'] ?? 0.0;
+    } else {
+      return (location as Position).longitude;
+    }
+  }
 }
