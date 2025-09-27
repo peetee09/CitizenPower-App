@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:file_picker/file_picker.dart'; // ADD for web file picking
 import 'package:citizenpower/screens/location_screen.dart';
 import 'package:citizenpower/widgets/media_preview.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class ReportScreen extends StatefulWidget {
   const ReportScreen({super.key});
@@ -15,12 +17,29 @@ class _ReportScreenState extends State<ReportScreen> {
   final List<XFile> _mediaFiles = [];
   final ImagePicker _picker = ImagePicker();
 
-  Future<void> _pickImage() async {
-    final XFile? image = await _picker.pickImage(source: ImageSource.camera);
-    if (image != null) {
-      setState(() {
-        _mediaFiles.add(image);
-      });
+  Future<void> _pickMedia() async {
+    if (kIsWeb) {
+      // Web file picking
+      FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.image,
+        allowMultiple: true,
+      );
+
+      if (result != null) {
+        setState(() {
+          for (var file in result.files) {
+            _mediaFiles.add(XFile(file.path!));
+          }
+        });
+      }
+    } else {
+      // Mobile camera/gallery picking
+      final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+      if (image != null) {
+        setState(() {
+          _mediaFiles.add(image);
+        });
+      }
     }
   }
 
@@ -47,26 +66,35 @@ class _ReportScreenState extends State<ReportScreen> {
             ),
             const SizedBox(height: 20),
             const Text(
-              'Add photos/videos (optional):',
+              'Add photos (optional):',
               style: TextStyle(fontSize: 18),
             ),
             const SizedBox(height: 10),
             MediaPreview(files: _mediaFiles),
             IconButton(
-              icon: const Icon(Icons.add_a_photo, size: 40),
-              onPressed: _pickImage,
+              icon: Icon(kIsWeb ? Icons.add_photo_alternate : Icons.add_a_photo, size: 40),
+              onPressed: _pickMedia,
+              tooltip: kIsWeb ? 'Upload photos' : 'Take photo',
             ),
+            if (kIsWeb) 
+              const Text(
+                'Note: On web, you can upload existing photos from your device',
+                style: TextStyle(fontSize: 12, color: Colors.grey),
+                textAlign: TextAlign.center,
+              ),
             const SizedBox(height: 30),
             ElevatedButton(
-              onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => LocationScreen(
-                    description: _descriptionController.text,
-                    mediaFiles: _mediaFiles,
+              onPressed: _descriptionController.text.isEmpty 
+                  ? null 
+                  : () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => LocationScreen(
+                        description: _descriptionController.text,
+                        mediaFiles: _mediaFiles,
+                      ),
+                    ),
                   ),
-                ),
-              ),
               child: const Text('Next: Location'),
             ),
           ],
