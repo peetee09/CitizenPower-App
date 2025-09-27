@@ -27,6 +27,8 @@ dependencies:
   flutter_local_notifications: ^13.0.0
   permission_handler: ^10.2.0
   http: ^0.13.5
+  universal_html: ^2.2.1  # ADD for web HTML support
+  file_picker: ^5.4.1     # ADD for web file picking
 
 dev_dependencies:
   flutter_test:
